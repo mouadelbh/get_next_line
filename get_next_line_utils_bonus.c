@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 20:10:16 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 09:51:28 by mel-bouh         ###   ########.fr       */
+/*   Created: 2023/11/25 09:14:24 by mel-bouh          #+#    #+#             */
+/*   Updated: 2023/11/25 09:51:00 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strchr(char *buf, char c)
 {
@@ -40,9 +40,10 @@ size_t	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start)
 {
 	char	*sub;
+	size_t	len;
 	size_t	length;
 	size_t	i;
 
@@ -52,8 +53,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	i = 0;
 	if (start > length)
 		len = 0;
-	else if (len > (length - start))
-		len = length - start;
+	len = length - start;
 	sub = (char *)malloc(sizeof(char) * (len + 1));
 	if (!sub)
 		return (NULL);
