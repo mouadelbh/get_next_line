@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:14:52 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 13:39:51 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:35:37 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,85 +24,53 @@ size_t	ft_strlchr(char *buf)
 	return (i);
 }
 
-char	*linemem(char *line)
+char	*getrest(char *s)
 {
-	size_t	i;
-	size_t	len;
-	char	*buff;
+	char	*p;
 
-	i = 0;
-	len = ft_strlchr(line);
-	if (ft_strchr(line, '\n'))
-		len++;
-	if (len == 0)
-	{
-		free (line);
+	p = ft_substr(s, ft_strlchr(s) + 1, ft_strlen(s));
+	if (!p)
 		return (NULL);
-	}
-	buff = (char *)malloc(len + 1);
-	if (!buff)
-		return (NULL);
-	while (line[i] && line[i] != '\n')
-	{
-		buff[i] = line[i];
-		i++;
-	}
-	if (ft_strchr(line, '\n'))
-		buff[i++] = '\n';
-	buff[i] = '\0';
-	return (buff);
+	return (free(s), p);
 }
 
-char	*creatline(char *line, char *buffer)
+size_t	check(int fd)
 {
 	char	*tmp;
+	size_t	rd;
 
-	tmp = ft_strjoin(line, buffer);
-	free (line);
-	if (!tmp)
-		return (NULL);
-	return (tmp);
-}
-
-char	*read_buff(int fd, char **line)
-{
-	char		*buffer;
-	char		*buf;
-	char		*tmp;
-	size_t		rd;
-
-	tmp = NULL;
-	if (!ft_strchr(line[fd], '\n'))
-	{
-		buffer = malloc(BUFFER_SIZE + 1);
-		if (!buffer)
-			return (NULL);
-		rd = read(fd, buffer, BUFFER_SIZE);
-		while (rd > 0)
-		{
-			buffer[rd] = '\0';
-			line[fd] = creatline(line[fd], buffer);
-			if (ft_strchr(line[fd], '\n'))
-				break ;
-			rd = read(fd, buffer, BUFFER_SIZE);
-		}
-	}
-	if (!line[fd] || !line[fd][0])
-		return (free (line[fd]), NULL);
-	buf = linemem(line[fd]);
-	tmp = line[fd];
-	free (buffer);
-	line[fd] = ft_substr(line[fd], ft_strlchr(line[fd]) + 1);
-	return (free(tmp), buf);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (1);
+	rd = read(fd, tmp, 0);
+	if (rd < 0)
+		return (1);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer[1024];
-	char		*line;
+	static char	*line;
+	char		*tmp;
+	char		*result;
+	size_t		rd;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (check(fd))
 		return (NULL);
-	line = read_buff(fd, buffer);
-	return (line);
+	tmp = malloc(BUFFER_SIZE + 1);
+	if (!tmp)
+		return (NULL);
+	rd = 1;
+	tmp[0] = '\0';
+	while (rd > 0 && !ft_strchr(tmp, '\n'))
+	{
+		rd = read(fd, tmp, BUFFER_SIZE);
+		if (rd < 0)
+			return (free(tmp), free(line), NULL);
+		tmp[rd] = '\0';
+		line = ft_strjoin(line, tmp);
+	}
+	if (!line || !line[0])
+		return (free(tmp), NULL);
+	result = ft_substr(line, 0, ft_strlchr(line) + 1);
+	line = getrest(line);
+	return (free(tmp), result);
 }
