@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:14:52 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 10:31:58 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/25 13:39:51 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*creatline(char *line, char *buffer)
 
 char	*read_buff(int fd, char **line)
 {
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer;
 	char		*buf;
 	char		*tmp;
 	size_t		rd;
@@ -74,6 +74,9 @@ char	*read_buff(int fd, char **line)
 	tmp = NULL;
 	if (!ft_strchr(line[fd], '\n'))
 	{
+		buffer = malloc(BUFFER_SIZE + 1);
+		if (!buffer)
+			return (NULL);
 		rd = read(fd, buffer, BUFFER_SIZE);
 		while (rd > 0)
 		{
@@ -88,6 +91,7 @@ char	*read_buff(int fd, char **line)
 		return (free (line[fd]), NULL);
 	buf = linemem(line[fd]);
 	tmp = line[fd];
+	free (buffer);
 	line[fd] = ft_substr(line[fd], ft_strlchr(line[fd]) + 1);
 	return (free(tmp), buf);
 }
