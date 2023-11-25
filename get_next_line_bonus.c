@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:14:52 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 17:37:18 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:49:31 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ char	*getrest(char *s)
 	return (free(s), p);
 }
 
-size_t	check(int fd)
-{
-	char	*tmp;
-	size_t	rd;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (1);
-	rd = read(fd, tmp, 0);
-	if (rd < 0)
-		return (1);
-}
-
 char	*get_next_line(int fd)
 {
 	static char	*line[1024];
@@ -53,7 +41,7 @@ char	*get_next_line(int fd)
 	char		*result;
 	size_t		rd;
 
-	if (check(fd))
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, tmp, 0) < 0)
 		return (NULL);
 	tmp = malloc(BUFFER_SIZE + 1);
 	if (!tmp)
@@ -64,7 +52,7 @@ char	*get_next_line(int fd)
 	{
 		rd = read(fd, tmp, BUFFER_SIZE);
 		if (rd < 0)
-			return (free(tmp), free(line), NULL);
+			return (free(tmp), free(line[fd]), NULL);
 		tmp[rd] = '\0';
 		line[fd] = ft_strjoin(line[fd], tmp);
 	}
