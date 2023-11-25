@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 20:10:16 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 15:18:38 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:07:34 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	size_t	length;
 	size_t	i;
 
-	if (!s)
-		return (NULL);
 	length = ft_strlen(s);
 	i = 0;
 	if (start > length)
@@ -67,26 +65,6 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	return (sub);
 }
 
-// char	*ft_strdup(char *s1)
-// {
-// 	char	*s2;
-// 	int		i;
-
-// 	if(!s1)
-// 	return NULL;
-// 	i = 0;
-// 	s2 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-// 	if (s2 == NULL)
-// 		return (NULL);
-// 	while (s1[i])
-// 	{
-// 		s2[i] = s1[i];
-// 		i++;
-// 	}
-// 	s2[i] = '\0';
-// 	return (s2);
-// }
-
 char	*ft_strjoin(char *line, char *buf)
 {
 	char	*join;
@@ -98,7 +76,7 @@ char	*ft_strjoin(char *line, char *buf)
 	join = (char *)malloc(ft_strlen(line) + ft_strlen(buf) + 1);
 	if (!join)
 		return (NULL);
-	if(line)
+	if (line)
 	{
 		while (line[i])
 			join[j++] = line[i++];
@@ -107,5 +85,5 @@ char	*ft_strjoin(char *line, char *buf)
 	while (buf[i])
 		join[j++] = buf[i++];
 	join[j] = '\0';
-	return (free(line),join);
+	return (free(line), join);
 }
