@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:14:52 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 16:35:37 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:37:18 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t	check(int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*line;
+	static char	*line[1024];
 	char		*tmp;
 	char		*result;
 	size_t		rd;
@@ -66,11 +66,11 @@ char	*get_next_line(int fd)
 		if (rd < 0)
 			return (free(tmp), free(line), NULL);
 		tmp[rd] = '\0';
-		line = ft_strjoin(line, tmp);
+		line[fd] = ft_strjoin(line[fd], tmp);
 	}
-	if (!line || !line[0])
+	if (!line[fd] || !line[fd][0])
 		return (free(tmp), NULL);
-	result = ft_substr(line, 0, ft_strlchr(line) + 1);
-	line = getrest(line);
+	result = ft_substr(line[fd], 0, ft_strlchr(line[fd]) + 1);
+	line[fd] = getrest(line[fd]);
 	return (free(tmp), result);
 }

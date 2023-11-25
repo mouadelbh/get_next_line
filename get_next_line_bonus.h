@@ -6,13 +6,12 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:13:27 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 16:52:53 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:33:59 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
-
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
