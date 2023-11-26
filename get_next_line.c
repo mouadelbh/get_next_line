@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 20:04:31 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 17:03:05 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:07:42 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,18 @@ char	*getrest(char *s)
 
 	p = ft_substr(s, ft_strlchr(s) + 1, ft_strlen(s));
 	if (!p)
-		return (NULL);
+		return (free(s), NULL);
 	return (free(s), p);
+}
+
+char	*join(int fd, char *line, char *tmp, long *rd)
+{
+	*rd = read(fd, tmp, BUFFER_SIZE);
+	if (*rd < 0)
+		return (free(tmp), free(line), NULL);
+	tmp[*rd] = '\0';
+	line = ft_strjoin(line, tmp);
+	return (line);
 }
 
 char	*get_next_line(int fd)
@@ -39,23 +49,17 @@ char	*get_next_line(int fd)
 	static char	*line;
 	char		*tmp;
 	char		*result;
-	size_t		rd;
+	ssize_t		rd;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, tmp, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
-	tmp = malloc(BUFFER_SIZE + 1);
+	tmp = (char *)malloc(BUFFER_SIZE + 1);
 	if (!tmp)
-		return (NULL);
+		return (free(line), NULL);
 	rd = 1;
 	tmp[0] = '\0';
 	while (rd > 0 && !ft_strchr(tmp, '\n'))
-	{
-		rd = read(fd, tmp, BUFFER_SIZE);
-		if (rd < 0)
-			return (free(tmp), free(line), NULL);
-		tmp[rd] = '\0';
-		line = ft_strjoin(line, tmp);
-	}
+		line = join(fd, line, tmp, &rd);
 	if (!line || !line[0])
 		return (free(tmp), NULL);
 	result = ft_substr(line, 0, ft_strlchr(line) + 1);

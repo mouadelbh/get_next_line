@@ -6,23 +6,32 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 20:06:32 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/25 16:51:44 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:08:25 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# if BUFFER_SIZE < 0
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 0
+
+# endif
+
+# if BUFFER_SIZE > 2147483646
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 2147483646
+
+# endif
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 
 # endif
 
-# include <fcntl.h>
-# include <stdlib.h>
 # include <unistd.h>
-# include <limits.h>
-# include <stdio.h>
+# include <stdlib.h>
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char *line, char *buf);
