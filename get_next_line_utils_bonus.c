@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:14:24 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/26 10:36:08 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:39:59 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,45 @@ size_t	ft_strlen(char *str)
 	return (i);
 }
 
+size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	len_d;
+	size_t	len_s;
+
+	i = 0;
+	if (!dst && src && !dstsize)
+		return (ft_strlen(src));
+	len_d = ft_strlen(dst);
+	len_s = ft_strlen(src);
+	if (dstsize == 0 || len_d >= dstsize)
+		return (dstsize + len_s);
+	while (src[i] && i < (dstsize - 1 - len_d))
+	{
+		dst[len_d + i] = src[i];
+		i++;
+	}
+	dst[len_d + i] = '\0';
+	return (len_d + len_s);
+}
+
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*sub;
 	size_t	length;
 	size_t	i;
 
+	if (!s)
+		return (NULL);
 	length = ft_strlen(s);
 	i = 0;
 	if (start > length)
-		len = 0;
+		start = length;
 	else if (len > (length - start))
 		len = length - start;
 	sub = (char *)malloc(sizeof(char) * (len + 1));
 	if (!sub)
-		return (free(s), NULL);
+		return (NULL);
 	s = s + start;
 	*(sub + len) = '\0';
 	while (len-- && *s)
@@ -62,28 +86,26 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		*(sub + i) = *(s + i);
 		i++;
 	}
+	if (!*sub)
+		return (free(sub), NULL);
 	return (sub);
 }
 
 char	*ft_strjoin(char *line, char *buf)
 {
 	char	*join;
-	size_t	i;
-	size_t	j;
 
-	i = 0;
-	j = 0;
+	if (!line && !buf)
+		return (NULL);
 	join = (char *)malloc(ft_strlen(line) + ft_strlen(buf) + 1);
 	if (!join)
-		return (free(line), NULL);
+		return (NULL);
+	join[0] = '\0';
 	if (line)
-	{
-		while (line[i])
-			join[j++] = line[i++];
-		i = 0;
-	}
-	while (buf[i])
-		join[j++] = buf[i++];
-	join[j] = '\0';
+		ft_strlcat(join, line, ft_strlen(line) + 1);
+	if (buf)
+		ft_strlcat(join, buf, ft_strlen(buf) + ft_strlen(line) + 1);
+	if (!join[0])
+		return (free(join), NULL);
 	return (free(line), join);
 }

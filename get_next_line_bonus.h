@@ -6,7 +6,7 @@
 /*   By: mel-bouh <mel-bouh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 09:13:27 by mel-bouh          #+#    #+#             */
-/*   Updated: 2023/11/26 15:08:10 by mel-bouh         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:39:36 by mel-bouh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 char	*get_next_line(int fd);
 char	*ft_strjoin(char *line, char *buf);
 char	*ft_substr(char *s, unsigned int start, size_t len);
+size_t	ft_strlcat(char *dst, char *src, size_t dstsize);
 size_t	ft_strlchr(char *buf);
 size_t	ft_strlen(char *str);
 size_t	ft_strchr(char	*buf, char c);
